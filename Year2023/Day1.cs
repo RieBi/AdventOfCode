@@ -1,6 +1,5 @@
-﻿using System.Globalization;
-using System.Reflection;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
+
 namespace AdventOfCode.Year2023;
 internal class Day1 : Day
 {
