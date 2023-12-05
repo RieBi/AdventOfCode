@@ -6,7 +6,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        Solve<Day4>();
+        Solve<Day5>();
     }
 
     static void Solve<T>() where T : Day, new()
@@ -21,9 +21,10 @@ internal class Program
         {
             day.PartOne();
         }
-        catch
+        catch (Exception exc)
         {
             Console.WriteLine("Catched an exception");
+            Console.WriteLine(exc);
         }
         Console.WriteLine();
         Console.WriteLine("Part two:");
@@ -31,9 +32,10 @@ internal class Program
         {
             day.PartTwo();
         }
-        catch
+        catch (Exception exc)
         {
             Console.WriteLine("Catched an exception");
+            Console.WriteLine(exc);
         }
     }
 }
