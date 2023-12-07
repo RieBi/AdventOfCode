@@ -82,48 +82,31 @@ internal class Day7 : Day
         int FindHandStrength(string hand)
         {
             var grouping = hand.GroupBy(f => f);
+
+            if (part2)
+            {
+                var maxNotJ = grouping.Where(f => f.Key != 'J')?.MaxBy(f => f.Count())?.Key;
+                if (maxNotJ != null)
+                    hand = hand.Replace('J', maxNotJ.Value);
+                grouping = hand.GroupBy(f => f);
+            }
+
             var max = grouping.Max(f => f.Count());
 
-            if (!part2)
-            {
-                if (max == 5)
-                    return 7;
-                if (max == 4)
-                    return 6;
-                if (grouping.Any(f => f.Count() == 3) && grouping.Any(f => f.Count() == 2))
-                    return 5;
-                if (max == 3)
-                    return 4;
-                if (grouping.Where(f => f.Count() == 2).Count() == 2)
-                    return 3;
-                if (max == 2)
-                    return 2;
+            if (max == 5)
+                return 7;
+            if (max == 4)
+                return 6;
+            if (grouping.Any(f => f.Count() == 3) && grouping.Any(f => f.Count() == 2))
+                return 5;
+            if (max == 3)
+                return 4;
+            if (grouping.Where(f => f.Count() == 2).Count() == 2)
+                return 3;
+            if (max == 2)
+                return 2;
 
-                return 1;
-            }
-            else
-            {
-                var jCount = hand.Count(f => f == 'J');
-                var filtered = grouping.Where(f => f.Key != 'J');
-                max = !filtered.Any() ? 0 : filtered.Max(f => f.Count());
-
-                if (max == 5 || max + jCount == 5)
-                    return 7;
-                if (max == 4 || max + jCount == 4)
-                    return 6;
-                if ((grouping.Any(f => f.Count() == 3) && grouping.Any(f => f.Count() == 2)) ||
-                    ((grouping.Where(f => f.Count() == 2).Count() == 2) && jCount == 1))
-                    return 5;
-                if (max == 3 || max + jCount == 3)
-                    return 4;
-                if ((grouping.Where(f => f.Count() == 2).Count() == 2) ||
-                    (max == 2 && jCount == 1))
-                    return 3;
-                if (max == 2 || jCount == 1)
-                    return 2;
-
-                return 1;
-            }
+            return 1;
         }
 
         int CompareCards(char a, char b)
