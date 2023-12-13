@@ -6,7 +6,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        Solve<Day11>();
+        Solve<Day12>();
     }
 
     static void Solve<T>() where T : Day, new()
