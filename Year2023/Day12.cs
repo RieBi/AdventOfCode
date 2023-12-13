@@ -3,6 +3,9 @@
 namespace AdventOfCode.Year2023;
 internal class Day12 : Day
 {
+    int Calls = 0;
+    Dictionary<(string, int, List<int>, List<int>), int> Cache = new Dictionary<(string, int, List<int>, List<int>), int>();
+
     public Day12()
     {
         this.DayNumber = 12;
@@ -46,6 +49,10 @@ internal class Day12 : Day
 
     int CalculateArrangements(StringBuilder pattern, List<int> unknowns, int position, List<int> numbering)
     {
+        var s = pattern.ToString();
+        if (Cache.ContainsKey((s, position, unknowns, numbering)))
+            return Cache[(s, position, unknowns, numbering)];
+
         if (position >= unknowns.Count)
         {
             if (GetPatternNumbering(pattern).SequenceEqual(numbering))
@@ -62,6 +69,7 @@ internal class Day12 : Day
         sum += CalculateArrangements(pattern, unknowns, position + 1, numbering);
         pattern[unknowns[position]] = '?';
 
+        Cache[(s, position, unknowns, numbering)] = sum;
         return sum;
     }
 
