@@ -1,10 +1,10 @@
 ﻿using System.Text;
+using System.Collections.Immutable;
 
 namespace AdventOfCode.Year2023;
 internal class Day12 : Day
 {
-    int Calls = 0;
-    Dictionary<(string, int, List<int>, List<int>), int> Cache = new Dictionary<(string, int, List<int>, List<int>), int>();
+    Dictionary<(string, int, ImmutableList<int>, int), long> Cache = new Dictionary<(string, int, ImmutableList<int>, int), long>();
 
     public Day12()
     {
@@ -15,7 +15,7 @@ internal class Day12 : Day
     {
         var lines = Input.Split('\n', StringSplitOptions.TrimEntries);
 
-        var sum = 0;
+        var sum = 0L;
         foreach (var line in lines)
         {
             var lineSum = GetArrangements(line);
@@ -27,70 +27,83 @@ internal class Day12 : Day
 
     public override void PartTwo()
     {
-        base.PartTwo();
+        var lines = Input.Split('\n', StringSplitOptions.TrimEntries);
+
+        var sum = 0L;
+        foreach (var line in lines)
+        {
+            var lineSum = GetArrangements(line, true);
+            sum += lineSum;
+        }
+
+        Console.WriteLine(sum);
     }
 
-    int GetArrangements(string line)
+    long GetArrangements(string line, bool partTwo = false)
     {
         var parts = line.Split(' ');
-        var pattern = parts[0];
-        var nums = parts[1].Split(',').Select(int.Parse).ToList();
-
-        var unknowns = new List<int>();
-        for (int i = 0; i < pattern.Length; i++)
+        if (partTwo)
         {
-            if (pattern[i] == '?')
-                unknowns.Add(i);
+            parts[0] = RepeatString(parts[0], "?", 5);
+            parts[1] = RepeatString(parts[1], ",", 5);
         }
 
-        var arrangementCount = CalculateArrangements(new StringBuilder(pattern), unknowns, 0, nums);
-        return arrangementCount;
+        var pattern = parts[0] + ".";
+        var groups = parts[1].Split(',').Select(int.Parse).ToImmutableList();
+
+        var s = CalculateArrangements(pattern, 0, groups, 0);
+        return s;
     }
 
-    int CalculateArrangements(StringBuilder pattern, List<int> unknowns, int position, List<int> numbering)
+    string RepeatString(string str, string separator, long count)
     {
-        var s = pattern.ToString();
-        if (Cache.ContainsKey((s, position, unknowns, numbering)))
-            return Cache[(s, position, unknowns, numbering)];
-
-        if (position >= unknowns.Count)
+        var builder = new StringBuilder();
+        for (long i = 0; i < count - 1; i++)
         {
-            if (GetPatternNumbering(pattern).SequenceEqual(numbering))
-                return 1;
-            else
-                return 0;
+            builder.Append(str);
+            builder.Append(separator);
         }
 
-        var sum = 0;
+        builder.Append(str);
+        return builder.ToString();
+    }
 
-        pattern[unknowns[position]] = '#';
-        sum += CalculateArrangements(pattern, unknowns, position + 1, numbering);
-        pattern[unknowns[position]] = '.';
-        sum += CalculateArrangements(pattern, unknowns, position + 1, numbering);
-        pattern[unknowns[position]] = '?';
+    long CalculateArrangements(string pattern, int position, ImmutableList<int> groups, int groupNum)
+    {
+        if (Cache.TryGetValue((pattern, position, groups, groupNum), out long cachedVal))
+            return cachedVal;
 
-        Cache[(s, position, unknowns, numbering)] = sum;
+        if (groupNum == groups.Count && !pattern[position..].Contains('#'))
+            return 1;
+        else if (position == pattern.Length || groups.Count == groupNum)
+            return 0;
+
+        var sum = 0L;
+
+        if (pattern[position] is '#' or '?' && IsPossibleGroup(pattern, position, groups[groupNum]))
+            sum += CalculateArrangements(pattern, position + groups[groupNum] + 1, groups, groupNum + 1);
+        
+        if (pattern[position] is '.' or '?')
+            sum += CalculateArrangements(pattern, position + 1, groups, groupNum);
+
+        Cache[(pattern, position, groups, groupNum)] = sum;
         return sum;
     }
 
-    List<int> GetPatternNumbering(StringBuilder pattern)
+    bool IsPossibleGroup(string pattern, int position, int group)
     {
-        var list = new List<int>();
-        var streak = 0;
-        for (int i = 0; i < pattern.Length; i++)
+        if (pattern.Length < group + position)
+            return false;
+
+        for (int i = position; i < group + position; i++)
         {
-            if (pattern[i] == '#')
-                streak++;
-            else if (streak > 0)
-            {
-                list.Add(streak);
-                streak = 0;
-            }
+            if (!(pattern[i] is '?' or '#'))
+                return false;
         }
 
-        if (streak > 0)
-            list.Add(streak);
-
-        return list;
+        if (pattern.Length == group + position || pattern[group + position] is '?' or '.')
+            return true;
+        else
+            return false;
     }
 }
