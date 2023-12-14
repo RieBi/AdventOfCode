@@ -1,11 +1,6 @@
 ﻿namespace AdventOfCode.Year2023;
 internal class Day8 : Day
 {
-    public Day8()
-    {
-        this.DayNumber = 8;
-    }
-
     public override void PartOne()
     {
         var lines = Input.Split('\n');

@@ -3,11 +3,6 @@
 namespace AdventOfCode.Year2023;
 internal partial class Day9 : Day
 {
-    public Day9()
-    {
-        this.DayNumber = 9;
-    }
-
     public override void PartOne()
     {
         Console.WriteLine(CalculateTotal(CalculateExtrapolatedLast));

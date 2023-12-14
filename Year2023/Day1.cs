@@ -5,11 +5,6 @@ internal class Day1 : Day
 {
     private char[] numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-	public Day1()
-	{
-		this.DayNumber = 1;
-	}
-
     public override void PartOne()
     {
         var sum = 0;

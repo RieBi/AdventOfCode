@@ -3,11 +3,6 @@
 namespace AdventOfCode.Year2023;
 internal class Day4 : Day
 {
-    public Day4()
-    {
-        this.DayNumber = 4;
-    }
-
     public override void PartOne()
     {
         var pattern = @"Card +\d+: +(?:(?<win>\d+) *)+\|(?: *(?<have>\d+))+";

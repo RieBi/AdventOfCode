@@ -8,11 +8,6 @@ internal class Day3 : Day
     private int result = 0;
     private int result2 = 0;
 
-    public Day3()
-    {
-        this.DayNumber = 3;
-    }
-
     public override void PartOne()
     {
         var matrix = Input.Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);

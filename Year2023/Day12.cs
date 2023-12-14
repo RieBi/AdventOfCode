@@ -2,14 +2,10 @@
 using System.Collections.Immutable;
 
 namespace AdventOfCode.Year2023;
+[AocDay(12)]
 internal class Day12 : Day
 {
     Dictionary<(string, int, ImmutableList<int>, int), long> Cache = new Dictionary<(string, int, ImmutableList<int>, int), long>();
-
-    public Day12()
-    {
-        this.DayNumber = 12;
-    }
 
     public override void PartOne()
     {

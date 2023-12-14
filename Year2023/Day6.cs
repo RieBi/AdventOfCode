@@ -2,12 +2,6 @@
 internal class Day6 : Day
 {
     string pattern = @"(?:[^\d]*(\d+))+";
-
-    public Day6()
-    {
-        this.DayNumber = 6;
-    }
-
     public override void PartOne()
     {
         var lines = Input.Split('\n');

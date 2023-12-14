@@ -1,11 +1,6 @@
 ﻿namespace AdventOfCode.Year2023;
 internal class Day7 : Day
 {
-    public Day7()
-    {
-        this.DayNumber = 7;
-    }
-
     public override void PartOne()
     {
         List<(string hand, long bid)> lines = Input.Split('\n').Select(f =>
