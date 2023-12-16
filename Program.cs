@@ -8,7 +8,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        Run(15);
+        Run(16);
     }
 
     static void Run(int num)
