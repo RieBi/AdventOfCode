@@ -107,52 +107,57 @@ internal class Day16 : Day
 
     List<string> GetNewDirections(((int i, int j) pos, string direction) beam, char tile)
     {
-        if (beam.direction == "right")
+        if (tile is '.')
+            return [beam.direction];
+
+        if (beam.direction is "right" or "left")
         {
-            if (tile is '.' or '-')
-                return ["right"];
+            if (tile is '-')
+                return [beam.direction];
             else if (tile is '|')
                 return ["up", "down"];
             else if (tile is '/')
-                return ["up"];
+                return [counterClockwise(beam.direction)];
             else if (tile is '\\')
-                return ["down"];
+                return [clockwise(beam.direction)];
         }
-        else if (beam.direction == "left")
+        else if (beam.direction is "up" or "down")
         {
-            if (tile is '.' or '-')
-                return ["left"];
-            else if (tile is '|')
-                return ["up", "down"];
-            else if (tile is '/')
-                return ["down"];
-            else if (tile is '\\')
-                return ["up"];
-        }
-        else if (beam.direction == "up")
-        {
-            if (tile is '.' or '|')
-                return ["up"];
+            if (tile is '|')
+                return [beam.direction];
             else if (tile is '-')
                 return ["left", "right"];
             else if (tile is '/')
-                return ["right"];
+                return [clockwise(beam.direction)];
             else if (tile is '\\')
-                return ["left"];
-        }
-        else if (beam.direction == "down")
-        {
-            if (tile is '.' or '|')
-                return ["down"];
-            else if (tile is '-')
-                return ["left", "right"];
-            else if (tile is '/')
-                return ["left"];
-            else if (tile is '\\')
-                return ["right"];
+                return [counterClockwise(beam.direction)];
         }
 
         return [];
+
+        string clockwise(string s)
+        {
+            return s switch
+            {
+                "right" => "down",
+                "down" => "left",
+                "left" => "up",
+                "up" => "right",
+                _ => ""
+            };
+        }
+
+        string counterClockwise(string s)
+        {
+            return s switch
+            {
+                "right" => "up",
+                "down" => "right",
+                "left" => "down",
+                "up" => "left",
+                _ => ""
+            };
+        }
     }
 
     int GetDirValue(string dir)
