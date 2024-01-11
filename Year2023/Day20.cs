@@ -38,7 +38,6 @@ internal class Day20 : Day
         for (int i = 0; i < 1000; i++)
         {
             lowCount++;
-            //lowCount += broadcasted.Length;
             foreach (var dest in broadcasted)
                 queue.Enqueue((PulseType.Low, null, dest));
 
