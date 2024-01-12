@@ -8,7 +8,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        Run(20);
+        Run(21);
     }
 
     static void Run(int num)
@@ -29,6 +29,7 @@ internal class Program
         var path = @$".\Year2023\Input\Day{dayNumber}.txt";
         var input = File.ReadAllText(path);
         day.Input = input;
+        day.InputLines = Utils.Lines(input);
         var watch = new Stopwatch();
 
         Console.WriteLine("Part one:");
@@ -84,6 +85,8 @@ internal class Program
 public abstract class Day
 {
     public string Input { get; set; } = default!;
+
+    public string[] InputLines { get; set; } = default!;
 
     public virtual void PartOne() { }
 
